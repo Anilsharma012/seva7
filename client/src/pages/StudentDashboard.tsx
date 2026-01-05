@@ -746,7 +746,7 @@ export default function StudentDashboard() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {membershipCard && membershipCard.paymentStatus === "approved" ? (
+                  {membershipCard && membershipCard.isGenerated ? (
                     <div className="bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl p-6">
                       <div className="flex flex-col md:flex-row items-center gap-6">
                         <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center">
@@ -768,12 +768,6 @@ export default function StudentDashboard() {
                           <Badge className="mt-2 bg-green-500">Active</Badge>
                         </div>
                       </div>
-                    </div>
-                  ) : membershipCard && membershipCard.paymentStatus === "pending" ? (
-                    <div className="text-center py-8">
-                      <Users className="h-12 w-12 mx-auto mb-4 text-orange-500" />
-                      <p className="font-medium">Membership Payment Pending</p>
-                      <p className="text-sm text-muted-foreground">Your membership will be activated after payment approval.</p>
                     </div>
                   ) : (
                     <div className="text-center py-8 text-muted-foreground">
