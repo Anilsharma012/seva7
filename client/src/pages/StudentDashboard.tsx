@@ -40,14 +40,17 @@ interface AdmitCardData {
 }
 
 interface MembershipCardData {
-  id: number;
+  id?: string;
+  _id?: string;
   cardNumber: string;
   memberName: string;
   memberPhoto?: string;
   validFrom: string;
   validUntil: string;
-  paymentStatus: string;
-  isGenerated: boolean;
+  paymentStatus?: string;
+  isGenerated?: boolean;
+  memberEmail?: string;
+  memberPhone?: string;
 }
 
 interface TransactionData {
