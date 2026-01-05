@@ -1,10 +1,10 @@
 import {
   Admin, Student, Result, AdmitCard as AdmitCardType, Membership, MenuItem, AdminSetting, PaymentConfig,
-  ContentSection, VolunteerApplication, FeeStructure, MembershipCard, MemberCard, Page, ContactInquiry, ContactInfo, TermsAndConditions,
+  ContentSection, VolunteerApplication, FeeStructure, MembershipCard, MemberCard, Page, ContactInquiry, ContactInfo, TermsAndConditions, News,
   InsertAdmin, InsertStudent, InsertResult, InsertAdmitCard, InsertMembership,
   InsertMenuItem, InsertAdminSetting, InsertPaymentConfig, InsertContentSection,
   InsertVolunteerApplication, InsertFeeStructure, InsertMembershipCard, InsertMemberCard, InsertPage, InsertContactInquiry,
-  InsertVolunteerAccount, InsertPaymentTransaction, InsertTeamMember, InsertService, InsertGalleryImage, InsertTermsAndConditions
+  InsertVolunteerAccount, InsertPaymentTransaction, InsertTeamMember, InsertService, InsertGalleryImage, InsertTermsAndConditions, InsertNews
 } from "@shared/schema";
 import {
   Admin as AdminModel, Student as StudentModel, Result as ResultModel, AdmitCard as AdmitCardModel,
@@ -14,7 +14,7 @@ import {
   MembershipCard as MembershipCardModel, MemberCard as MemberCardModel, Page as PageModel, ContactInquiry as ContactInquiryModel,
   VolunteerAccount as VolunteerAccountModel, PaymentTransaction as PaymentTransactionModel,
   TeamMember as TeamMemberModel, Service as ServiceModel, GalleryImage as GalleryImageModel, ContactInfo as ContactInfoModel,
-  TermsAndConditions as TermsAndConditionsModel
+  TermsAndConditions as TermsAndConditionsModel, News as NewsModel
 } from "./models";
 
 function toPlain<T>(doc: any): T {
@@ -146,6 +146,13 @@ export interface IStorage {
   getActiveGalleryImages(): Promise<GalleryImage[]>;
   updateGalleryImage(id: string, data: Partial<InsertGalleryImage>): Promise<GalleryImage | undefined>;
   deleteGalleryImage(id: string): Promise<void>;
+
+  createNews(data: InsertNews): Promise<News>;
+  getNewsById(id: string): Promise<News | undefined>;
+  getAllNews(): Promise<News[]>;
+  getActiveNews(): Promise<News[]>;
+  updateNews(id: string, data: Partial<InsertNews>): Promise<News | undefined>;
+  deleteNews(id: string): Promise<void>;
 
   getContactInfo(): Promise<ContactInfo | undefined>;
   updateContactInfo(data: Partial<ContactInfo>): Promise<ContactInfo | undefined>;
@@ -636,6 +643,35 @@ export class DatabaseStorage implements IStorage {
 
   async deleteGalleryImage(id: string): Promise<void> {
     await GalleryImageModel.findByIdAndDelete(id);
+  }
+
+  async createNews(data: InsertNews): Promise<News> {
+    const news = await NewsModel.create(data);
+    return toPlain<News>(news);
+  }
+
+  async getNewsById(id: string): Promise<News | undefined> {
+    const news = await NewsModel.findById(id);
+    return news ? toPlain<News>(news) : undefined;
+  }
+
+  async getAllNews(): Promise<News[]> {
+    const news = await NewsModel.find().sort({ date: -1, order: 1 });
+    return toPlainArray<News>(news);
+  }
+
+  async getActiveNews(): Promise<News[]> {
+    const news = await NewsModel.find({ isActive: true }).sort({ date: -1, order: 1 });
+    return toPlainArray<News>(news);
+  }
+
+  async updateNews(id: string, data: Partial<InsertNews>): Promise<News | undefined> {
+    const news = await NewsModel.findByIdAndUpdate(id, { ...data, updatedAt: new Date() }, { new: true });
+    return news ? toPlain<News>(news) : undefined;
+  }
+
+  async deleteNews(id: string): Promise<void> {
+    await NewsModel.findByIdAndDelete(id);
   }
 
   async getContactInfo(): Promise<ContactInfo | undefined> {

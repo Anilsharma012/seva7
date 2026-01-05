@@ -27,6 +27,7 @@ import {
   Layout,
   Wallet,
   MessageSquare,
+  Newspaper,
   LucideIcon,
   Loader2
 } from "lucide-react";
@@ -66,6 +67,7 @@ const iconMap: Record<string, LucideIcon> = {
   Layout,
   Wallet,
   MessageSquare,
+  Newspaper,
 };
 
 const fallbackMenuItems = [
@@ -81,6 +83,8 @@ const fallbackMenuItems = [
   { icon: Receipt, label: "Transactions", href: "/admin/transactions" },
   { icon: MessageSquare, label: "Contact Inquiries", href: "/admin/contact-inquiries" },
   { icon: FileEdit, label: "Content", href: "/admin/content" },
+  { icon: Newspaper, label: "News", href: "/admin/news" },
+  { icon: Image, label: "Gallery", href: "/admin/gallery" },
   { icon: Layout, label: "Pages", href: "/admin/pages" },
   { icon: Wallet, label: "Payments", href: "/admin/payments" },
   { icon: Phone, label: "Contact Info", href: "/admin/contact-information" },

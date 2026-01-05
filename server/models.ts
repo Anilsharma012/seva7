@@ -677,6 +677,24 @@ const GalleryImageSchema = new Schema<IGalleryImage>({
   updatedAt: { type: Date, default: Date.now }
 });
 
+const NewsSchema = new Schema<INews>({
+  title: { type: String, required: true },
+  titleHindi: String,
+  excerpt: { type: String, required: true },
+  excerptHindi: String,
+  content: String,
+  contentHindi: String,
+  imageUrl: { type: String, required: true },
+  category: { type: String, required: true },
+  categoryHindi: String,
+  source: String,
+  date: { type: Date, default: Date.now },
+  isActive: { type: Boolean, default: true },
+  order: { type: Number, default: 0 },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
+});
+
 const PasswordResetTokenSchema = new Schema<IPasswordResetToken>({
   userId: { type: Schema.Types.ObjectId, required: true },
   userType: { type: String, enum: ['student', 'member'], required: true },
@@ -783,6 +801,7 @@ export const PaymentTransaction = mongoose.model<IPaymentTransaction>('PaymentTr
 export const TeamMember = mongoose.model<ITeamMember>('TeamMember', TeamMemberSchema);
 export const Service = mongoose.model<IService>('Service', ServiceSchema);
 export const GalleryImage = mongoose.model<IGalleryImage>('GalleryImage', GalleryImageSchema);
+export const News = mongoose.model<INews>('News', NewsSchema);
 export const PasswordResetToken = mongoose.model<IPasswordResetToken>('PasswordResetToken', PasswordResetTokenSchema);
 export const Member = mongoose.model<IMember>('Member', MemberSchema);
 export const MemberCard = mongoose.model<IMemberCard>('MemberCard', MemberCardSchema);

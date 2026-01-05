@@ -359,6 +359,25 @@ export interface TermsAndConditions {
   updatedAt: Date;
 }
 
+export interface News {
+  id: string;
+  title: string;
+  titleHindi?: string | null;
+  excerpt: string;
+  excerptHindi?: string | null;
+  content?: string | null;
+  contentHindi?: string | null;
+  imageUrl: string;
+  category: string;
+  categoryHindi?: string | null;
+  source?: string | null;
+  date: Date;
+  isActive: boolean;
+  order: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export const insertAdminSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
@@ -639,6 +658,22 @@ export const insertTermsAndConditionsSchema = z.object({
   isActive: z.boolean().optional(),
 });
 
+export const insertNewsSchema = z.object({
+  title: z.string(),
+  titleHindi: z.string().optional(),
+  excerpt: z.string(),
+  excerptHindi: z.string().optional(),
+  content: z.string().optional(),
+  contentHindi: z.string().optional(),
+  imageUrl: z.string(),
+  category: z.string(),
+  categoryHindi: z.string().optional(),
+  source: z.string().optional(),
+  date: z.date().optional(),
+  isActive: z.boolean().optional(),
+  order: z.number().optional(),
+});
+
 export type InsertAdmin = z.infer<typeof insertAdminSchema>;
 export type InsertStudent = z.infer<typeof insertStudentSchema>;
 export type InsertResult = z.infer<typeof insertResultSchema>;
@@ -661,3 +696,4 @@ export type InsertService = z.infer<typeof insertServiceSchema>;
 export type InsertGalleryImage = z.infer<typeof insertGalleryImageSchema>;
 export type InsertContactInfo = z.infer<typeof insertContactInfoSchema>;
 export type InsertTermsAndConditions = z.infer<typeof insertTermsAndConditionsSchema>;
+export type InsertNews = z.infer<typeof insertNewsSchema>;

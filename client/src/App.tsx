@@ -49,6 +49,7 @@ import AdminPayments from "./pages/admin/AdminPayments";
 import AdminContactInquiries from "./pages/admin/AdminContactInquiries";
 import AdminContactInformation from "./pages/admin/AdminContactInformation";
 import AdminTransactions from "./pages/admin/AdminTransactions";
+import AdminNews from "./pages/admin/AdminNews";
 
 
 const App = () => (
@@ -103,6 +104,7 @@ const App = () => (
             <Route path="/admin/volunteers" element={<AdminVolunteers />} />
             <Route path="/admin/gallery" element={<AdminGallery />} />
             <Route path="/admin/content" element={<AdminContent />} />
+            <Route path="/admin/news" element={<AdminNews />} />
             <Route path="/admin/pages" element={<AdminPages />} />
             <Route path="/admin/payments" element={<AdminPayments />} />
             <Route path="/admin/transactions" element={<AdminTransactions />} />
