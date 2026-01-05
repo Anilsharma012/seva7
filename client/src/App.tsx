@@ -49,6 +49,7 @@ import AdminPayments from "./pages/admin/AdminPayments";
 import AdminContactInquiries from "./pages/admin/AdminContactInquiries";
 import AdminContactInformation from "./pages/admin/AdminContactInformation";
 import AdminTransactions from "./pages/admin/AdminTransactions";
+import AdminNews from "./pages/admin/AdminNews";
 
 
 const App = () => (
