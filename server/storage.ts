@@ -14,7 +14,7 @@ import {
   MembershipCard as MembershipCardModel, MemberCard as MemberCardModel, Page as PageModel, ContactInquiry as ContactInquiryModel,
   VolunteerAccount as VolunteerAccountModel, PaymentTransaction as PaymentTransactionModel,
   TeamMember as TeamMemberModel, Service as ServiceModel, GalleryImage as GalleryImageModel, ContactInfo as ContactInfoModel,
-  TermsAndConditions as TermsAndConditionsModel
+  TermsAndConditions as TermsAndConditionsModel, News as NewsModel
 } from "./models";
 
 function toPlain<T>(doc: any): T {
