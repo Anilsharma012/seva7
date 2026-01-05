@@ -317,6 +317,15 @@ export async function seedDatabase() {
       console.log("Default payment configs created");
     }
 
+    const existingTermsAndConditions = await storage.getAllTermsAndConditions();
+    for (const tac of defaultTermsAndConditions) {
+      const exists = existingTermsAndConditions.find(t => t.type === tac.type);
+      if (!exists) {
+        await storage.createTermsAndConditions(tac);
+        console.log(`Terms and conditions created: ${tac.type}`);
+      }
+    }
+
     console.log("Database seeding completed");
   } catch (error) {
     console.error("Error seeding database:", error);
