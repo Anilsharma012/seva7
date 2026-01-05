@@ -1531,6 +1531,72 @@ export async function registerRoutes(app: Express): Promise<void> {
     }
   });
 
+  // ============ NEWS ROUTES ============
+  app.get("/api/news", async (req, res) => {
+    try {
+      const news = await storage.getActiveNews();
+      res.json(news);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch news" });
+    }
+  });
+
+  app.get("/api/news/:id", async (req, res) => {
+    try {
+      const news = await storage.getNewsById(req.params.id);
+      if (!news) return res.status(404).json({ error: "News not found" });
+      res.json(news);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch news" });
+    }
+  });
+
+  app.get("/api/admin/news", authMiddleware, adminOnly, async (req: AuthRequest, res) => {
+    try {
+      const news = await storage.getAllNews();
+      res.json(news);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch news" });
+    }
+  });
+
+  app.post("/api/admin/news", authMiddleware, adminOnly, async (req: AuthRequest, res) => {
+    try {
+      const validated = insertNewsSchema.parse({
+        ...req.body,
+        date: req.body.date ? new Date(req.body.date) : new Date(),
+      });
+      const news = await storage.createNews(validated);
+      res.status(201).json(news);
+    } catch (error: any) {
+      console.error("News creation error:", error);
+      res.status(400).json({ error: error.message || "Invalid news data" });
+    }
+  });
+
+  app.patch("/api/admin/news/:id", authMiddleware, adminOnly, async (req: AuthRequest, res) => {
+    try {
+      const updateData = {
+        ...req.body,
+        ...(req.body.date && { date: new Date(req.body.date) }),
+      };
+      const news = await storage.updateNews(req.params.id, updateData);
+      if (!news) return res.status(404).json({ error: "News not found" });
+      res.json(news);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to update news" });
+    }
+  });
+
+  app.delete("/api/admin/news/:id", authMiddleware, adminOnly, async (req: AuthRequest, res) => {
+    try {
+      await storage.deleteNews(req.params.id);
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to delete news" });
+    }
+  });
+
   // ============ PASSWORD RESET ROUTES ============
   app.post("/api/auth/student/forgot-password", async (req, res) => {
     try {
