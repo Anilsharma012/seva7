@@ -27,6 +27,7 @@ import {
   Layout,
   Wallet,
   MessageSquare,
+  Newspaper,
   LucideIcon,
   Loader2
 } from "lucide-react";
