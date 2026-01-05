@@ -835,12 +835,27 @@ export async function registerRoutes(app: Express): Promise<void> {
 
   app.get("/api/my-membership-card", authMiddleware, async (req: AuthRequest, res) => {
     try {
-      const membership = await storage.getMembershipByUserId(req.user?.id || "");
-      if (!membership) return res.status(404).json({ error: "Membership not found" });
-      
-      const card = await storage.getMembershipCardByMembershipId(membership.id);
+      // First try to get the student to get their email
+      const student = await storage.getStudentById(req.user?.id || "");
+      if (!student) {
+        return res.status(404).json({ error: "Student not found" });
+      }
+
+      // Look for a Member record by email (new membership system)
+      const member = await Member.findOne({ email: student.email });
+      if (!member) {
+        return res.status(404).json({ error: "Membership not found" });
+      }
+
+      // Get the I-Card for this member
+      const card = await storage.getMemberCardByMemberId(member._id.toString());
+      if (!card) {
+        return res.status(404).json({ error: "Membership card not generated yet" });
+      }
+
       res.json(card);
     } catch (error) {
+      console.error("Error fetching membership card:", error);
       res.status(500).json({ error: "Failed to fetch membership card" });
     }
   });
