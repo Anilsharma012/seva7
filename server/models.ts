@@ -677,6 +677,24 @@ const GalleryImageSchema = new Schema<IGalleryImage>({
   updatedAt: { type: Date, default: Date.now }
 });
 
+const NewsSchema = new Schema<INews>({
+  title: { type: String, required: true },
+  titleHindi: String,
+  excerpt: { type: String, required: true },
+  excerptHindi: String,
+  content: String,
+  contentHindi: String,
+  imageUrl: { type: String, required: true },
+  category: { type: String, required: true },
+  categoryHindi: String,
+  source: String,
+  date: { type: Date, default: Date.now },
+  isActive: { type: Boolean, default: true },
+  order: { type: Number, default: 0 },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
+});
+
 const PasswordResetTokenSchema = new Schema<IPasswordResetToken>({
   userId: { type: Schema.Types.ObjectId, required: true },
   userType: { type: String, enum: ['student', 'member'], required: true },
