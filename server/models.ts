@@ -288,6 +288,24 @@ export interface IGalleryImage extends Document {
   updatedAt: Date;
 }
 
+export interface INews extends Document {
+  title: string;
+  titleHindi?: string;
+  excerpt: string;
+  excerptHindi?: string;
+  content?: string;
+  contentHindi?: string;
+  imageUrl: string;
+  category: string;
+  categoryHindi?: string;
+  source?: string;
+  date: Date;
+  isActive: boolean;
+  order: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface IPasswordResetToken extends Document {
   userId: mongoose.Types.ObjectId;
   userType: 'student' | 'member';
