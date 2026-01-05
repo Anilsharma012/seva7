@@ -1,6 +1,7 @@
 import type { Express } from "express";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
+import mongoose from "mongoose";
 import { storage } from "./storage";
 import { authMiddleware, adminOnly, generateToken, AuthRequest } from "./middleware/auth";
 import { insertGalleryImageSchema, insertTermsAndConditionsSchema } from "@shared/schema";
