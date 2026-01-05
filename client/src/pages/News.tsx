@@ -1,65 +1,16 @@
+import { useState, useEffect } from "react";
 import Layout from "@/components/layout/Layout";
-import { Calendar, ExternalLink, Newspaper } from "lucide-react";
-import educationImage from "@/assets/prize-distribution.jpg";
-import healthImage from "@/assets/health-camp.jpg";
-import communityImage from "@/assets/community-service.jpg";
+import { Calendar, ExternalLink, Newspaper, Loader2 } from "lucide-react";
 
-const newsItems = [
-  {
-    id: 1,
-    title: "Manav Welfare Distributes Prizes Worth Lakhs to Students",
-    excerpt: "In a grand ceremony, over 500 students received prizes for their performance in the annual Haryana GK competition.",
-    date: "December 20, 2024",
-    image: educationImage,
-    source: "Local News",
-    category: "Education",
-  },
-  {
-    id: 2,
-    title: "Free Health Camp Benefits 300+ Villagers",
-    excerpt: "The health camp organized in Gorkhpur village provided free medical checkups and medicines to over 300 residents.",
-    date: "December 15, 2024",
-    image: healthImage,
-    source: "Dainik Bhaskar",
-    category: "Health",
-  },
-  {
-    id: 3,
-    title: "NGO Plants 1000 Trees in Environmental Drive",
-    excerpt: "Volunteers from Manav Welfare Seva Society successfully planted 1000 saplings across multiple villages.",
-    date: "November 28, 2024",
-    image: communityImage,
-    source: "Haryana Today",
-    category: "Environment",
-  },
-  {
-    id: 4,
-    title: "Blood Donation Camp Collects 100+ Units",
-    excerpt: "The quarterly blood donation drive saw enthusiastic participation from youth and community members.",
-    date: "November 10, 2024",
-    image: healthImage,
-    source: "Local News",
-    category: "Health",
-  },
-  {
-    id: 5,
-    title: "Free Education Center Opens in Badhwana",
-    excerpt: "A new free education center was inaugurated to provide quality education to underprivileged children.",
-    date: "October 25, 2024",
-    image: educationImage,
-    source: "Regional Express",
-    category: "Education",
-  },
-  {
-    id: 6,
-    title: "Society Recognized for Community Service",
-    excerpt: "Manav Welfare Seva Society received appreciation from district administration for outstanding community service.",
-    date: "October 2, 2024",
-    image: communityImage,
-    source: "Govt. of Haryana",
-    category: "Recognition",
-  },
-];
+interface NewsItem {
+  id: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  imageUrl: string;
+  source?: string;
+  category: string;
+}
 
 const latestUpdates = [
   { date: "Dec 2024", text: "Registration open for Haryana Ko Jano 2025 competition" },
@@ -70,6 +21,26 @@ const latestUpdates = [
 ];
 
 export default function News() {
+  const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const response = await fetch("/api/news");
+        if (response.ok) {
+          const data = await response.json();
+          setNewsItems(data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch news:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchNews();
+  }, []);
   return (
     <Layout>
       {/* Hero Section */}
