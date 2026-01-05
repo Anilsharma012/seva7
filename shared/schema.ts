@@ -658,6 +658,22 @@ export const insertTermsAndConditionsSchema = z.object({
   isActive: z.boolean().optional(),
 });
 
+export const insertNewsSchema = z.object({
+  title: z.string(),
+  titleHindi: z.string().optional(),
+  excerpt: z.string(),
+  excerptHindi: z.string().optional(),
+  content: z.string().optional(),
+  contentHindi: z.string().optional(),
+  imageUrl: z.string(),
+  category: z.string(),
+  categoryHindi: z.string().optional(),
+  source: z.string().optional(),
+  date: z.date().optional(),
+  isActive: z.boolean().optional(),
+  order: z.number().optional(),
+});
+
 export type InsertAdmin = z.infer<typeof insertAdminSchema>;
 export type InsertStudent = z.infer<typeof insertStudentSchema>;
 export type InsertResult = z.infer<typeof insertResultSchema>;
