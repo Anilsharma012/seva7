@@ -359,6 +359,25 @@ export interface TermsAndConditions {
   updatedAt: Date;
 }
 
+export interface News {
+  id: string;
+  title: string;
+  titleHindi?: string | null;
+  excerpt: string;
+  excerptHindi?: string | null;
+  content?: string | null;
+  contentHindi?: string | null;
+  imageUrl: string;
+  category: string;
+  categoryHindi?: string | null;
+  source?: string | null;
+  date: Date;
+  isActive: boolean;
+  order: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export const insertAdminSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
