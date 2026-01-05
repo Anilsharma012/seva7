@@ -71,43 +71,55 @@ export default function News() {
                 <Newspaper className="h-6 w-6 text-primary" />
                 News & Media Coverage
               </h2>
-              
-              <div className="space-y-8">
-                {newsItems.map((item) => (
-                  <article key={item.id} className="bg-card rounded-2xl overflow-hidden shadow-card hover:shadow-elevated transition-all duration-300 group">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
-                      <div className="relative h-48 md:h-full overflow-hidden">
-                        <img
-                          src={item.image}
-                          alt={item.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                        <span className="absolute top-4 left-4 bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full">
-                          {item.category}
-                        </span>
-                      </div>
-                      <div className="md:col-span-2 p-6">
-                        <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
-                          <span className="flex items-center gap-1">
-                            <Calendar className="h-4 w-4" />
-                            {item.date}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <ExternalLink className="h-4 w-4" />
-                            {item.source}
+
+              {isLoading ? (
+                <div className="flex items-center justify-center py-12">
+                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                </div>
+              ) : newsItems.length === 0 ? (
+                <div className="bg-card rounded-2xl p-6 text-center text-muted-foreground">
+                  <p>No news items available yet</p>
+                </div>
+              ) : (
+                <div className="space-y-8">
+                  {newsItems.map((item) => (
+                    <article key={item.id} className="bg-card rounded-2xl overflow-hidden shadow-card hover:shadow-elevated transition-all duration-300 group">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
+                        <div className="relative h-48 md:h-full overflow-hidden">
+                          <img
+                            src={item.imageUrl}
+                            alt={item.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                          <span className="absolute top-4 left-4 bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full">
+                            {item.category}
                           </span>
                         </div>
-                        <h3 className="text-xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors">
-                          {item.title}
-                        </h3>
-                        <p className="text-muted-foreground leading-relaxed">
-                          {item.excerpt}
-                        </p>
+                        <div className="md:col-span-2 p-6">
+                          <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
+                            <span className="flex items-center gap-1">
+                              <Calendar className="h-4 w-4" />
+                              {new Date(item.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                            </span>
+                            {item.source && (
+                              <span className="flex items-center gap-1">
+                                <ExternalLink className="h-4 w-4" />
+                                {item.source}
+                              </span>
+                            )}
+                          </div>
+                          <h3 className="text-xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors">
+                            {item.title}
+                          </h3>
+                          <p className="text-muted-foreground leading-relaxed">
+                            {item.excerpt}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </article>
-                ))}
-              </div>
+                    </article>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Sidebar */}
