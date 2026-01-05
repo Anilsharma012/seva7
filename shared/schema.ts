@@ -696,3 +696,4 @@ export type InsertService = z.infer<typeof insertServiceSchema>;
 export type InsertGalleryImage = z.infer<typeof insertGalleryImageSchema>;
 export type InsertContactInfo = z.infer<typeof insertContactInfoSchema>;
 export type InsertTermsAndConditions = z.infer<typeof insertTermsAndConditionsSchema>;
+export type InsertNews = z.infer<typeof insertNewsSchema>;
