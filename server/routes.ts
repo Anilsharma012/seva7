@@ -1275,34 +1275,64 @@ export async function registerRoutes(app: Express): Promise<void> {
       if (req.body.status === "approved" && transaction.email) {
         // Generate I-Card for member if this is a membership payment
         if (transaction.type === "membership") {
-          const member = await Member.findOne({ email: transaction.email });
-          if (member) {
-            // Check if I-Card already exists
-            let iCard = await storage.getMemberCardByMemberId(member._id.toString());
+          let member = await Member.findOne({ email: transaction.email });
 
-            if (!iCard) {
-              // Generate card number
-              const count = await MemberCard.countDocuments();
-              const cardNumber = `MWSS-CARD-${String(count + 1).padStart(6, "0")}`;
+          // Create member if doesn't exist
+          if (!member) {
+            // Generate membership number
+            const count = await Member.countDocuments();
+            const membershipNumber = `MWSS-M${String(count + 1).padStart(4, "0")}`;
 
-              // Create I-Card
-              iCard = await storage.createMemberCard({
-                memberId: member._id.toString(),
-                membershipNumber: member.membershipNumber || "",
-                memberName: member.fullName,
-                memberEmail: member.email,
-                memberPhone: member.phone,
-                memberCity: member.city,
-                memberAddress: member.address,
-                cardNumber: cardNumber,
-                isGenerated: true,
-                validFrom: new Date().toISOString().split('T')[0],
-                validUntil: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
-              });
+            // Hash a default password (user should reset it)
+            const hashedPassword = await bcrypt.hash(crypto.randomBytes(16).toString('hex'), 10);
 
-              // Update member with iCard reference
-              await Member.findByIdAndUpdate(member._id, { iCardId: iCard.id });
-            }
+            member = await Member.create({
+              email: transaction.email,
+              password: hashedPassword,
+              fullName: transaction.name || "Member",
+              phone: transaction.phone || "",
+              address: transaction.address || "",
+              city: transaction.city || "",
+              membershipType: transaction.membershipLevel || "regular",
+              membershipNumber: membershipNumber,
+              status: "approved",
+              isVerified: true,
+              isActive: true,
+              membershipStartDate: new Date(),
+              membershipExpiryDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
+              termsAccepted: true,
+              termsAcceptedAt: new Date(),
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            });
+            console.log(`Member created from payment transaction: ${transaction.email}`);
+          }
+
+          // Check if I-Card already exists
+          let iCard = await storage.getMemberCardByMemberId(member._id.toString());
+
+          if (!iCard) {
+            // Generate card number
+            const count = await MemberCard.countDocuments();
+            const cardNumber = `MWSS-CARD-${String(count + 1).padStart(6, "0")}`;
+
+            // Create I-Card
+            iCard = await storage.createMemberCard({
+              memberId: member._id.toString(),
+              membershipNumber: member.membershipNumber || "",
+              memberName: member.fullName,
+              memberEmail: member.email,
+              memberPhone: member.phone,
+              memberCity: member.city,
+              memberAddress: member.address,
+              cardNumber: cardNumber,
+              isGenerated: true,
+              validFrom: new Date().toISOString().split('T')[0],
+              validUntil: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
+            });
+
+            // Update member with iCard reference
+            await Member.findByIdAndUpdate(member._id, { iCardId: iCard.id });
           }
         }
 
