@@ -645,6 +645,35 @@ export class DatabaseStorage implements IStorage {
     await GalleryImageModel.findByIdAndDelete(id);
   }
 
+  async createNews(data: InsertNews): Promise<News> {
+    const news = await NewsModel.create(data);
+    return toPlain<News>(news);
+  }
+
+  async getNewsById(id: string): Promise<News | undefined> {
+    const news = await NewsModel.findById(id);
+    return news ? toPlain<News>(news) : undefined;
+  }
+
+  async getAllNews(): Promise<News[]> {
+    const news = await NewsModel.find().sort({ date: -1, order: 1 });
+    return toPlainArray<News>(news);
+  }
+
+  async getActiveNews(): Promise<News[]> {
+    const news = await NewsModel.find({ isActive: true }).sort({ date: -1, order: 1 });
+    return toPlainArray<News>(news);
+  }
+
+  async updateNews(id: string, data: Partial<InsertNews>): Promise<News | undefined> {
+    const news = await NewsModel.findByIdAndUpdate(id, { ...data, updatedAt: new Date() }, { new: true });
+    return news ? toPlain<News>(news) : undefined;
+  }
+
+  async deleteNews(id: string): Promise<void> {
+    await NewsModel.findByIdAndDelete(id);
+  }
+
   async getContactInfo(): Promise<ContactInfo | undefined> {
     const contactInfo = await ContactInfoModel.findOne().sort({ createdAt: -1 });
     return contactInfo ? toPlain<ContactInfo>(contactInfo) : undefined;
