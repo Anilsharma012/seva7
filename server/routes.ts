@@ -1304,10 +1304,8 @@ export async function registerRoutes(app: Express): Promise<void> {
               membershipExpiryDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
               termsAccepted: true,
               termsAcceptedAt: new Date(),
-              approvedBy: req.user?.id ? new (Member as any).ObjectId(req.user.id) : undefined,
+              approvedBy: req.user?.id ? new mongoose.Types.ObjectId(req.user.id) : undefined,
               approvedAt: new Date(),
-              createdAt: new Date(),
-              updatedAt: new Date(),
             });
             console.log(`Member created from payment transaction: ${transaction.email}`);
           }
