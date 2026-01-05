@@ -147,6 +147,13 @@ export interface IStorage {
   updateGalleryImage(id: string, data: Partial<InsertGalleryImage>): Promise<GalleryImage | undefined>;
   deleteGalleryImage(id: string): Promise<void>;
 
+  createNews(data: InsertNews): Promise<News>;
+  getNewsById(id: string): Promise<News | undefined>;
+  getAllNews(): Promise<News[]>;
+  getActiveNews(): Promise<News[]>;
+  updateNews(id: string, data: Partial<InsertNews>): Promise<News | undefined>;
+  deleteNews(id: string): Promise<void>;
+
   getContactInfo(): Promise<ContactInfo | undefined>;
   updateContactInfo(data: Partial<ContactInfo>): Promise<ContactInfo | undefined>;
 
